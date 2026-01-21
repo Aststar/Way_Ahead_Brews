@@ -1,72 +1,152 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ShoppingCart } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useCart } from '../context/CartContext.tsx';
-import WingLogo from './icons/WingLogo.tsx';
 import Cart from './Cart.tsx';
+import { Page } from '../App.tsx';
 
-const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => {
+interface NavLinkProps {
+  active?: boolean;
+  onClick: (e: React.MouseEvent) => void;
+  children: React.ReactNode;
+}
+
+const NavLink: React.FC<NavLinkProps> = ({ active, onClick, children }) => {
   return (
-    <a href={href} className="relative text-lg font-semibold text-white no-underline overflow-hidden py-2">
+    <button 
+      onClick={onClick}
+      className={`relative text-lg font-semibold py-2 font-heading transition-colors outline-none focus:text-[#ec1c24] ${active ? 'text-[#ec1c24]' : 'text-white hover:text-[#ec1c24]'}`}
+    >
       {children}
       <motion.span
-        className="absolute bottom-0 left-0 h-1 w-full bg-yellow-400"
-        initial={{ y: "100%" }}
-        whileHover={{ y: 0 }}
+        className="absolute bottom-0 left-0 h-0.5 w-full bg-[#ec1c24]"
+        initial={{ scaleX: active ? 1 : 0 }}
+        animate={{ scaleX: active ? 1 : 0 }}
+        whileHover={{ scaleX: 1 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
       />
-    </a>
+    </button>
   );
 };
 
-const Header: React.FC = () => {
+const Header: React.FC<{ currentPage: Page; onNavigate: (page: Page) => void }> = ({ currentPage, onNavigate }) => {
   const { cartCount, isCartOpen, setIsCartOpen } = useCart();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleNav = (page: Page) => {
+    onNavigate(page);
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-50 bg-slate-900/80 backdrop-blur-sm">
+      <header className="fixed top-0 left-0 w-full z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
         <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <a href="#" className="flex items-center gap-2 text-red-500">
-            <WingLogo className="h-10 w-10" />
-            <span className="text-2xl font-bold text-white">Way Ahead</span>
-          </a>
-          <nav className="hidden md:flex items-center gap-8">
-            <NavLink href="#story">Story</NavLink>
-            <NavLink href="#process">Process</NavLink>
-            <NavLink href="#shop">Shop</NavLink>
-          </nav>
-          <button
-            onClick={() => setIsCartOpen(true)}
-            className="relative text-white hover:text-yellow-400 transition-colors"
-            aria-label="Open cart"
+          {/* Logo */}
+          <button 
+            onClick={() => handleNav('home')} 
+            className="flex items-center group outline-none"
           >
-            <ShoppingCart size={28} />
-            {cartCount > 0 && (
-              <motion.span
-                className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-              >
-                {cartCount}
-              </motion.span>
-            )}
+            <img 
+              src="/logos/WayAhead-Logo-RGB-260115-v01ccr.png" 
+              alt="Way Ahead Logo" 
+              width="180"
+              height="48"
+              /* @ts-ignore - fetchpriority is a valid experimental attribute */
+              fetchpriority="high"
+              decoding="async"
+              className="h-10 md:h-12 w-auto transition-transform group-hover:scale-105" 
+            />
           </button>
-        </div>
-        <div className="absolute bottom-0 left-0 w-full h-4 overflow-hidden -mb-4">
-          <motion.svg
-            className="w-[200%] h-auto"
-            viewBox="0 0 1440 32"
-            fill="#FBBF24"
-            xmlns="http://www.w3.org/2000/svg"
-            animate={{ x: ['-50%', '0%'] }}
-            transition={{ duration: 10, ease: 'linear', repeat: Infinity, repeatType: 'mirror' }}
-          >
-            <path d="M0,224L48,213.3C96,203,192,181,288,192C384,203,480,245,576,250.7C672,256,768,224,864,197.3C960,171,1056,149,1152,154.7C1248,160,1344,192,1392,208L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z" transform="translate(0 -200)"></path>
-          </motion.svg>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-10">
+            <NavLink active={currentPage === 'home'} onClick={() => handleNav('home')}>Home</NavLink>
+            <NavLink active={currentPage === 'story'} onClick={() => handleNav('story')}>Our Story</NavLink>
+            <NavLink active={currentPage === 'process'} onClick={() => handleNav('process')}>Our Process</NavLink>
+            <NavLink active={currentPage === 'shop'} onClick={() => handleNav('shop')}>Shop</NavLink>
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center gap-2 md:gap-4">
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="relative text-white hover:text-[#ec1c24] transition-colors p-2 outline-none"
+              aria-label="Open cart"
+            >
+              <ShoppingCart size={24} />
+              {cartCount > 0 && (
+                <motion.span
+                  className="absolute top-0 right-0 bg-[#ec1c24] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                >
+                  {cartCount}
+                </motion.span>
+              )}
+            </button>
+
+            {/* Mobile Menu Toggle (Sandwich Bar) */}
+            <button 
+              className="md:hidden text-white p-2 hover:text-[#ec1c24] transition-colors outline-none"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            </button>
+          </div>
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[45] bg-slate-950 flex flex-col items-center justify-center gap-12 md:hidden"
+          >
+            <nav className="flex flex-col gap-10 items-center text-center">
+              <button 
+                onClick={() => handleNav('home')} 
+                className={`text-4xl font-bold tracking-tight ${currentPage === 'home' ? 'text-[#ec1c24]' : 'text-white'}`}
+              >
+                Home
+              </button>
+              <button 
+                onClick={() => handleNav('story')} 
+                className={`text-4xl font-bold tracking-tight ${currentPage === 'story' ? 'text-[#ec1c24]' : 'text-white'}`}
+              >
+                Our Story
+              </button>
+              <button 
+                onClick={() => handleNav('process')} 
+                className={`text-4xl font-bold tracking-tight ${currentPage === 'process' ? 'text-[#ec1c24]' : 'text-white'}`}
+              >
+                Our Process
+              </button>
+              <button 
+                onClick={() => handleNav('shop')} 
+                className={`text-4xl font-bold tracking-tight ${currentPage === 'shop' ? 'text-[#ec1c24]' : 'text-white'}`}
+              >
+                Shop
+              </button>
+            </nav>
+            
+            <div className="flex flex-col items-center gap-4">
+              <div className="h-16 w-auto flex items-center justify-center">
+                <img src="/logos/WayAhead-Logo-RGB-260115-v01ccr.png" alt="Logo" className="h-full w-auto" />
+              </div>
+              <p className="text-slate-500 text-sm tracking-widest uppercase">Way Ahead Brews</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Cart isOpen={isCartOpen} setIsOpen={setIsCartOpen} />
     </>
   );

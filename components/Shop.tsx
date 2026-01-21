@@ -23,36 +23,29 @@ const Shop: React.FC = () => {
     getProducts();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
   return (
-    <section id="shop" className="py-20 md:py-32 bg-slate-800/50">
+    <section id="shop" className="py-24 md:py-32 bg-[#f8b0b2]">
       <div className="container mx-auto px-6">
-        <motion.h2 
-          className="text-4xl md:text-5xl font-extrabold text-center mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Get Your Brews
-        </motion.h2>
+        <div className="flex flex-col items-center mb-16">
+            <motion.h2 
+                className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight"
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+            >
+                Shop Way Ahead
+            </motion.h2>
+            <div className="w-24 h-1 bg-[#ec1c24] rounded-full mt-6"></div>
+        </div>
 
         {loading ? (
-          <div className="text-center text-xl">Loading Brews...</div>
+          <div className="text-center text-slate-900/60 font-medium italic">Brewing the shop...</div>
         ) : (
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ staggerChildren: 0.1 }}
           >
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />

@@ -64,7 +64,7 @@ const Cart: React.FC<{ isOpen: boolean; setIsOpen: (isOpen: boolean) => void }> 
                     <span>Subtotal</span>
                     <span>${totalPrice.toFixed(2)}</span>
                 </div>
-                <button className="w-full bg-yellow-400 text-slate-900 font-bold py-3 rounded-lg hover:bg-yellow-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled={cart.length === 0}>
+                <button className="w-full bg-[#ec1c24] text-white font-bold py-3 rounded-lg hover:bg-white hover:text-[#ec1c24] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(236,28,36,0.3)]" disabled={cart.length === 0}>
                     Checkout
                 </button>
             </div>

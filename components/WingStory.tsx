@@ -1,93 +1,67 @@
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { brandStories } from '../lib/data.ts';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import WingLogo from './icons/WingLogo.tsx';
 
-const WingStory: React.FC = () => {
-  const [selectedStory, setSelectedStory] = useState(brandStories[0]);
+interface WingStoryProps {
+  onMoreClick: () => void;
+}
 
-  const story = brandStories.find((s) => s.id === selectedStory.id)!;
-  const BgElements = story.bgElements;
-  const StoryLogo = story.logo;
+const WingStory: React.FC<WingStoryProps> = ({ onMoreClick }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const backgroundColor = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    ['#0f172a', '#005a31', '#0f172a']
+  );
 
   return (
-    <section id="story" className="relative py-20 md:py-32 overflow-hidden">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={story.id + "-bg"}
-          className={`absolute inset-0 z-0 ${story.bgColor}`}
-          initial={{ clipPath: 'circle(0% at 50% 50%)' }}
-          animate={{ clipPath: 'circle(150% at 50% 50%)' }}
-          exit={{ clipPath: 'circle(0% at 50% 50%)' }}
-          transition={{ duration: 0.7, ease: 'easeInOut' }}
-        />
-      </AnimatePresence>
+    <section id="story" ref={containerRef} className="relative py-32 md:py-48 overflow-hidden transition-colors duration-700">
+      <motion.div style={{ backgroundColor }} className="absolute inset-0 z-0" />
       
-      <div className="absolute inset-0 z-0 opacity-10">
-        {BgElements.map((El, i) => (
-          <motion.div
-            key={story.id + i}
-            className="absolute"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5 + i * 0.1, type: 'spring' }}
-            style={{
-              top: `${20 + i * 30}%`,
-              left: `${10 + i * 35}%`,
-              rotate: `${i * 45}deg`
-            }}
-          >
-            <El className={`w-24 h-24 ${story.accentColor}`} />
-          </motion.div>
-        ))}
-      </div>
-
-
       <div className="container mx-auto px-6 relative z-10">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="text-center md:text-left">
-             <AnimatePresence mode="wait">
-                <motion.div
-                    key={story.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <h2 className={`text-4xl md:text-5xl font-extrabold ${story.accentColor}`}>{story.title}</h2>
-                    <p className="mt-4 text-lg text-white max-w-lg mx-auto md:mx-0">
-                        {story.description}
-                    </p>
-                </motion.div>
-             </AnimatePresence>
-          </div>
-          <div className="flex flex-col items-center">
-            <motion.div
-              key={story.id + "-wing"}
-              initial={{ scale: 0.5, y: -100, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 100, damping: 10, delay: 0.2 }}
-              className={`relative ${story.accentColor}`}
+        <div className="grid md:grid-cols-2 gap-20 items-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center md:text-left"
+          >
+            <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter leading-none mb-8">
+              A Legacy of <br/>
+              <span className="text-[#ec1c24]">Pure Intent.</span>
+            </h2>
+            <p className="text-xl text-white/90 leading-relaxed max-w-lg mb-10">
+                There is a reason our non-alcoholic beers are called Way Ahead. It’s not just a brand name, but a philosophy. You are Way Ahead because you prioritize taste, freshness, and mental clarity.
+            </p>
+            <button
+              onClick={onMoreClick}
+              className="px-8 py-3 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 backdrop-blur-sm text-white font-bold transition-all uppercase tracking-widest text-sm"
             >
-              <WingLogo className="w-64 h-64" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <StoryLogo className="w-20 h-20" />
-              </div>
-            </motion.div>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              {brandStories.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setSelectedStory(item)}
-                  className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 transform
-                    ${selectedStory.id === item.id ? 'scale-110 shadow-lg' : 'scale-90 opacity-70 hover:opacity-100 hover:scale-100'}
-                    ${item.bgColor} ${item.accentColor}`}
-                >
-                  <item.logo className="w-8 h-8"/>
-                </button>
-              ))}
+              Discover Our Story
+            </button>
+            <div className="mt-12 flex items-center gap-6 justify-center md:justify-start">
+                 <div className="w-16 h-[1px] bg-white/30"></div>
+                 <p className="text-white/60 uppercase tracking-widest text-sm">Est. 2024</p>
             </div>
+          </motion.div>
+
+          <div className="relative flex justify-center">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
+              whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
+              viewport={{ once: true }}
+              transition={{ type: 'spring', stiffness: 50, delay: 0.2 }}
+              className="relative text-white"
+            >
+              <div className="absolute inset-0 bg-[#ec1c24]/20 blur-[100px] rounded-full"></div>
+              <WingLogo className="w-80 h-80 drop-shadow-2xl text-[#ec1c24]" />
+            </motion.div>
           </div>
         </div>
       </div>
