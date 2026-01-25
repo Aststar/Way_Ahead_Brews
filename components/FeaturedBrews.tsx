@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface FeaturedBrewsProps {
   onShopClick?: () => void;
@@ -10,56 +10,110 @@ const CANS = [
   { 
     id: 'pilsner', 
     name: 'Pilsner', 
-    color: 'from-green-700 to-green-500', 
-    shadow: 'shadow-green-500/50',
     delay: 0,
-    rotate: -6 
+    rotate: -6,
+    image: '/images/cans/Pilsner.png'
   },
   { 
     id: 'ipa', 
     name: 'Hazy IPA', 
-    color: 'from-slate-700 to-slate-500', 
-    shadow: 'shadow-slate-500/50',
     delay: 0.2,
-    rotate: -3 
+    rotate: -3,
+    image: '/images/cans/IPA.png'
   },
   { 
     id: 'white', 
     name: 'Belgian White', 
-    color: 'from-blue-600 to-sky-400', 
-    shadow: 'shadow-sky-500/50',
     delay: 0.4,
-    rotate: 3 
+    rotate: 3,
+    image: '/images/cans/Belgian.png'
   },
   { 
     id: 'strawberry', 
     name: 'Strawberry', 
-    color: 'from-pink-500 to-rose-400', 
-    shadow: 'shadow-rose-500/50',
     delay: 0.6,
-    rotate: 6 
+    rotate: 6,
+    image: '/images/cans/Strawberry.png'
   },
 ];
 
 const FeaturedBrews: React.FC<FeaturedBrewsProps> = ({ onShopClick }) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  // Parallax effect for section - moves faster than hero
+  const sectionY = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+
   return (
-    <section id="featured" className="pt-0 pb-24 md:pb-32 bg-[#6e80a6] overflow-hidden flex flex-col items-center">
+    <motion.section
+      id="featured"
+      ref={sectionRef}
+      className="relative pb-8 md:pb-12 bg-white overflow-visible flex flex-col items-center"
+      style={{ 
+        y: sectionY,
+        paddingTop: 'calc(6rem + 1cm)'
+      }}
+    >
       <div className="container mx-auto px-6 flex flex-col items-center">
+        {/* Title and Subtitle */}
+        <div className="flex flex-col items-center" style={{ marginBottom: 'calc(4rem - 3cm)' }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-slate-900 mb-6"
+          >
+            Our Collection
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="text-lg md:text-xl lg:text-2xl text-slate-600 text-center flex items-center gap-2 flex-wrap justify-center max-w-3xl"
+          >
+            <span>Pick one or have them all, either way you're</span>
+            <img 
+              src="/images/wordmark/WayAhead-Wordmark-WA-RGB-Red-260115-v01ccr.png"
+              alt="Way Ahead"
+              className="h-14 md:h-18 lg:h-20 inline-block"
+              loading="lazy"
+              decoding="async"
+            />
+          </motion.p>
+        </div>
         {/* The Can Squad */}
-        <div className="relative w-full max-w-5xl h-[400px] md:h-[550px] [perspective:1000px] flex justify-center items-end gap-3 md:gap-8">
-          {CANS.map((can, index) => (
+        <div className="relative w-full max-w-6xl h-[720px] md:h-[820px] [perspective:1000px] flex justify-center items-start gap-0 overflow-visible" style={{ marginTop: '-2cm' }}>
+          {CANS.map((can, index) => {
+            // Center cans (index 1, 2) should be in front of outer ones
+            const zIndexBase = (index === 1 || index === 2) ? 30 : 10;
+            // Apply negative margin for overlapping (except first can)
+            const negativeMargin = index > 0 ? '-ml-32 md:-ml-52' : '';
+
+            // Parallax effect
+            const parallaxY = useTransform(
+              scrollYProgress,
+              [0, 1],
+              [18 * (index - 1.5), -18 * (index - 1.5)],
+            );
+            
+            return (
             <motion.div
               key={can.id}
               initial={{ y: 200, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{ 
                 type: "spring", 
                 damping: 14, 
                 stiffness: 100, 
                 delay: 0.1 + (index * 0.1) 
               }}
-              className="relative group cursor-pointer"
+              className={`relative group cursor-pointer ${negativeMargin}`}
+              style={{ zIndex: zIndexBase, y: parallaxY }}
             >
               <button onClick={onShopClick} className="appearance-none block">
                 <motion.div
@@ -77,30 +131,20 @@ const FeaturedBrews: React.FC<FeaturedBrewsProps> = ({ onShopClick }) => {
                     zIndex: 50,
                     transition: { duration: 0.3 } 
                   }}
-                  className={`relative w-24 md:w-52 aspect-[1/2] rounded-3xl bg-gradient-to-br ${can.color} p-1 ${can.shadow} shadow-2xl border-t border-white/20 transition-shadow duration-300`}
+                  className="relative w-80 md:w-[576px] aspect-[1/2]"
                   style={{ rotate: can.rotate }}
                 >
-                  <div className="w-full h-full rounded-[20px] bg-slate-900/10 backdrop-blur-sm flex flex-col items-center justify-between py-8 border border-white/10 overflow-hidden relative">
-                    {/* Glossy Reflection */}
-                    <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
-
-                    {/* Logo Area - Using optimized symbol */}
-                    <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center p-2">
-                       <img 
-                          src="/logos/WayAhead-Symbol-260115-v01ccr.svg" 
-                          alt="" 
-                          className="w-full h-full invert brightness-200"
-                       />
-                    </div>
-
-                    {/* Text */}
-                    <div className="text-center px-2">
-                      <h3 className="text-white font-heading text-lg md:text-3xl font-bold leading-none drop-shadow-md">
-                        {can.name}
-                      </h3>
-                      <p className="text-[9px] md:text-[11px] text-white/80 uppercase tracking-widest mt-2">Way Ahead</p>
-                    </div>
-                  </div>
+                  {/* Can Image - Transparent background */}
+                  <img 
+                    src={can.image}
+                    alt={can.name}
+                    className="w-full h-full object-contain"
+                    style={{ 
+                      mixBlendMode: 'normal',
+                      imageRendering: 'auto'
+                    }}
+                    loading="lazy"
+                  />
                 </motion.div>
                 
                 {/* Floor Shadow */}
@@ -111,21 +155,11 @@ const FeaturedBrews: React.FC<FeaturedBrewsProps> = ({ onShopClick }) => {
                 />
               </button>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
-        
-        <motion.div 
-          className="mt-16"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <p className="text-white/60 font-medium uppercase tracking-[0.3em] text-xs">
-            Molecular precision in every drop
-          </p>
-        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

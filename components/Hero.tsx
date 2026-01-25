@@ -17,16 +17,81 @@ const Hero: React.FC<HeroProps> = ({ onShopClick, onStoryClick }) => {
 
   const opacityText = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   const yText = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  // Parallax effect for background - moves slower
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (
     <section 
       ref={targetRef}
-      className="relative min-h-[70vh] md:min-h-[80vh] flex flex-col items-center justify-center overflow-hidden pt-32 pb-8 md:pb-12"
+      className="relative flex flex-col items-center justify-center overflow-hidden"
+      style={{
+        width: '100vw',
+        height: 'calc(100vh + 2cm)',
+        minHeight: 'calc(100vh + 2cm)',
+        maxHeight: 'calc(100vh + 2cm)',
+        marginLeft: 'calc(50% - 50vw)',
+        marginRight: 'calc(50% - 50vw)',
+        paddingTop: '80px',
+        paddingBottom: '0px'
+      }}
     >
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-900/40 via-slate-950 to-slate-950 z-0 pointer-events-none" />
+      {/* Background Image - Full Bleed with Parallax */}
+      <motion.div 
+        className="absolute z-0 pointer-events-none"
+        style={{
+          backgroundImage: 'url(/images/pictures/5.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center 25%',
+          backgroundRepeat: 'no-repeat',
+          width: '100vw',
+          height: 'calc(100vh + 2cm)',
+          minHeight: 'calc(100vh + 2cm)',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          y: backgroundY
+        }}
+      />
+      {/* Black Overlay - 10% Transparency */}
+      <div 
+        className="absolute z-0 pointer-events-none"
+        style={{
+          backgroundColor: 'rgba(0, 0, 0, 0.1)',
+          width: '100vw',
+          height: 'calc(100vh + 2cm)',
+          top: 0,
+          left: 0,
+          right: 0
+        }}
+      />
+      {/* Background Gradient Overlay - Minimal Vignette */}
+      <div 
+        className="absolute z-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at center, transparent 0%, rgba(15, 23, 42, 0.2) 50%, rgba(2, 6, 23, 0.4) 100%)',
+          width: '100vw',
+          height: 'calc(100vh + 2cm)',
+          top: 0,
+          left: 0,
+          right: 0
+        }}
+      />
+      {/* Smooth Transition Gradient at Bottom */}
+      <div 
+        className="absolute z-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.8) 100%)',
+          width: '100vw',
+          height: '200px',
+          bottom: 0,
+          left: 0,
+          right: 0
+        }}
+      />
 
-      <div className="container mx-auto px-4 z-10 relative flex flex-col items-center text-center">
+      {/* Content Container - Centered with max-width */}
+      <div className="container mx-auto px-4 z-10 relative flex flex-col items-center text-center w-full" style={{ marginTop: '-1cm' }}>
         
         {/* --- 0% ALCOHOL BADGE --- */}
         <motion.div
@@ -52,56 +117,48 @@ const Hero: React.FC<HeroProps> = ({ onShopClick, onStoryClick }) => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[#d4af37] text-sm font-medium tracking-wider uppercase"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[#f5dd12] text-sm font-medium tracking-wider uppercase"
           >
             <Star className="w-4 h-4 fill-current" />
             The Molecular Carbonation Standard
           </motion.div>
 
           {/* --- BIG HEADLINE --- */}
-          <h1 className="text-5xl md:text-8xl lg:text-9xl font-heading text-white tracking-tight leading-[0.9]">
+          <div className="flex flex-col items-center">
             {/* Line 1 */}
             <motion.span 
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-              className="block"
+              className="block text-white text-5xl md:text-8xl lg:text-9xl font-heading font-bold tracking-tight"
             >
               Flavorfully
             </motion.span>
-            {/* Line 2 */}
-            <motion.span 
+            {/* Line 2 - Wordmark */}
+            <motion.div
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
               className="block"
+              style={{ marginTop: '-1.5cm' }}
             >
-              <span className="text-[#ec1c24]">Way</span>{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400">
-                Ahead.
-              </span>
-            </motion.span>
-          </h1>
-
-          {/* --- SLOGAN --- */}
-          <motion.p 
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-lg md:text-2xl text-slate-300 font-light max-w-2xl mx-auto leading-relaxed"
-          >
-            "Once you're way ahead, <br className="md:hidden" />
-            <span className="text-[#d4af37] font-heading italic text-2xl md:text-3xl">
-              you never look back.
-            </span>"
-          </motion.p>
+              <img 
+                src="/images/wordmark/WayAhead-Wordmark-WA-RGB-Red-260115-v01ccr.png"
+                alt="Way Ahead"
+                className="h-40 md:h-64 lg:h-80 xl:h-96 w-auto object-contain"
+                loading="eager"
+                decoding="async"
+              />
+            </motion.div>
+          </div>
 
           {/* --- CTAs --- */}
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex flex-col md:flex-row gap-4 justify-center items-center relative z-30 pt-4"
+            className="flex flex-col md:flex-row gap-4 justify-center items-center relative z-30"
+            style={{ marginTop: '-1cm' }}
           >
             <button 
               onClick={onShopClick}

@@ -49,7 +49,7 @@ const Header: React.FC<{ currentPage: Page; onNavigate: (page: Page) => void }> 
             className="flex items-center group outline-none"
           >
             <img 
-              src="/logos/WayAhead-Logo-RGB-260115-v01ccr.png" 
+              src="/images/logo/WayAhead-Logo-RGB-260115-v01ccr.png" 
               alt="Way Ahead Logo" 
               width="180"
               height="48"
@@ -139,7 +139,7 @@ const Header: React.FC<{ currentPage: Page; onNavigate: (page: Page) => void }> 
             
             <div className="flex flex-col items-center gap-4">
               <div className="h-16 w-auto flex items-center justify-center">
-                <img src="/logos/WayAhead-Logo-RGB-260115-v01ccr.png" alt="Logo" className="h-full w-auto" />
+                <img src="/images/logo/WayAhead-Logo-RGB-260115-v01ccr.png" alt="Logo" className="h-full w-auto" />
               </div>
               <p className="text-slate-500 text-sm tracking-widest uppercase">Way Ahead Brews</p>
             </div>

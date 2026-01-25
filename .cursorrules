@@ -1,0 +1,126 @@
+# Cursor AI Rules for Way Ahead Brews
+
+## Core Principles
+
+1. **Read First**: Always read `ARCHITECTURE.md` before writing or modifying code to understand the system architecture, patterns, and current status.
+
+2. **Update Last**: After modifying code that affects structure, dependencies, or core patterns, update `ARCHITECTURE.md` to reflect changes.
+
+3. **Token Efficiency**: 
+   - Prefer editing small, specific files over rewriting large ones
+   - Use targeted search/replace operations
+   - Avoid reading entire files when only a section is needed
+   - Reference `ARCHITECTURE.md` instead of reading multiple files for context
+
+4. **No Fluff**: 
+   - Focus on code and logic
+   - Avoid conversational filler
+   - Provide concise explanations only when necessary
+   - Skip obvious comments in code
+
+## Code Modification Rules
+
+### Before Writing Code
+1. Check `ARCHITECTURE.md` for:
+   - Current directory structure
+   - Existing patterns and conventions
+   - Tech stack versions
+   - Related components/files
+
+2. Search codebase for similar implementations before creating new patterns
+
+3. Verify file locations match the documented structure
+
+### When Writing Code
+1. **Follow Existing Patterns**:
+   - Use React.FC for components
+   - Use Framer Motion for animations
+   - Use Tailwind utility classes
+   - Follow naming conventions (PascalCase for components, camelCase for utilities)
+
+2. **Component Organization**:
+   - Place layout components in `src/components/layout/`
+   - Place page components in `src/components/pages/`
+   - Place feature components in `src/components/features/`
+   - Place reusable UI in `src/components/ui/`
+
+3. **State Management**:
+   - Use React Context for global state (cart)
+   - Use local state for component-specific state
+   - Avoid prop drilling - use context when appropriate
+
+4. **Styling**:
+   - Use Tailwind classes exclusively
+   - Follow color palette: `#ec1c24` (red), `#d4af37` (gold), slate-900/950 (dark)
+   - Mobile-first responsive design with `md:` and `lg:` breakpoints
+
+5. **TypeScript**:
+   - Define interfaces for all props
+   - Use exported types from `src/types/`
+   - Avoid `any` types
+
+### After Writing Code
+1. **Update Documentation** if you:
+   - Added new dependencies
+   - Changed directory structure
+   - Modified core patterns (routing, state management)
+   - Created new major features
+
+2. **Check for Consistency**:
+   - Naming conventions
+   - Code style
+   - Import organization
+
+## File-Specific Rules
+
+### Components
+- Keep components under 200 lines when possible
+- Split large components into smaller, focused modules
+- Extract reusable logic into custom hooks or utilities
+- Use TypeScript interfaces for all props
+
+### Context Providers
+- Keep context logic in `src/context/`
+- Export custom hooks (e.g., `useCart()`) for consuming context
+- Document context state and methods
+
+### Utilities & Data
+- Business logic in `src/lib/`
+- Static data exports from `src/lib/data.ts`
+- API functions in `src/lib/shopify.ts`
+
+### Types
+- Shared types in `src/types/index.ts`
+- Component-specific types can be defined in component files
+- Export types for reuse
+
+## Error Handling
+
+- Always handle async operations with try/catch
+- Provide user-friendly error messages
+- Log errors to console in development
+- Consider error boundaries for React components
+
+## Performance Considerations
+
+- Use `loading="lazy"` for images
+- Implement code splitting for large components
+- Optimize animations with Framer Motion best practices
+- Avoid unnecessary re-renders with React.memo when appropriate
+
+## Testing (Future)
+
+- Write unit tests for utilities and business logic
+- Write component tests for complex UI logic
+- Keep tests in `__tests__` directories adjacent to source files
+
+## Communication Style
+
+- Be direct and technical
+- Skip pleasantries unless user requests them
+- Focus on implementation details
+- Reference `ARCHITECTURE.md` when explaining system design
+
+---
+
+**Remember**: The goal is efficient, maintainable code that follows established patterns. When in doubt, check `ARCHITECTURE.md` first.
