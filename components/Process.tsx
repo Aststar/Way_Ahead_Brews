@@ -46,17 +46,17 @@ const Process: React.FC<ProcessProps> = ({ onProcessClick }) => {
                     {processSteps.map((step, i) => (
                         <motion.div
                             key={step.id}
-                            className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/10 text-center hover:bg-white/15 transition-all group"
+                            className="bg-white p-8 rounded-2xl border border-slate-200 text-center hover:shadow-lg transition-all group"
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.15 }}
                         >
-                            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 text-white group-hover:scale-110 transition-transform">
+                            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-700 group-hover:scale-110 transition-transform">
                                 <step.icon className="w-8 h-8" />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-white">{step.title}</h3>
-                            <p className="text-white/70 text-sm leading-relaxed">{step.description}</p>
+                            <h3 className="text-xl font-bold mb-3 text-slate-900">{step.title}</h3>
+                            <p className="text-slate-600 text-sm leading-relaxed">{step.description}</p>
                         </motion.div>
                     ))}
                 </div>

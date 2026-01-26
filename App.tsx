@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { CartProvider } from './context/CartContext.tsx';
 import Header from './components/Header.tsx';
-import Bubbles from './components/Bubbles.tsx';
 import Hero from './components/Hero.tsx';
 import FeaturedBrews from './components/FeaturedBrews.tsx';
 import WingStory from './components/WingStory.tsx';
@@ -20,13 +19,12 @@ const App: React.FC = () => {
 
   const navigateTo = (page: Page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   };
 
   return (
     <CartProvider>
       <div className="bg-slate-900 text-white min-h-screen relative selection:bg-[#ec1c24] selection:text-white">
-        <Bubbles />
         <Header currentPage={currentPage} onNavigate={navigateTo} />
         <main className="relative z-[1]">
           {currentPage === 'home' && (

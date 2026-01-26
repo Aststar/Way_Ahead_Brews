@@ -9,12 +9,22 @@ interface FooterProps {
 
 const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     return (
-        <footer className="bg-slate-900 border-t border-slate-800">
-            <div className="container mx-auto px-6 py-12">
+        <footer className="bg-[#005a31] border-t border-white/10 relative overflow-hidden">
+            {/* Condensation Overlay */}
+            <div 
+              className="absolute inset-0 pointer-events-none opacity-20"
+              style={{
+                backgroundImage: 'url(/images/textures/condensation.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center bottom',
+                mixBlendMode: 'overlay'
+              }}
+            />
+            <div className="container mx-auto px-6 py-12 relative z-10">
                 <div className="flex flex-col items-center text-center">
                     <button onClick={() => onNavigate('home')} className="flex items-center mb-6 group outline-none">
                         <img 
-                          src="/logos/WayAhead-Logo-RGB-260115-v01ccr.png" 
+                          src="/images/logo/WayAhead-Logo-RGB-260115-v01ccr.png" 
                           alt="Way Ahead Logo" 
                           width="240"
                           height="64"
@@ -38,7 +48,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                         <a href="#" className="text-slate-400 hover:text-white transition-colors"><Github /></a>
                     </div>
                 </div>
-                <div className="mt-12 border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+                <div className="mt-12 border-t border-white/10 pt-8 text-center text-white/60 text-sm">
                     <p>&copy; {new Date().getFullYear()} Way Ahead Brews. Precision Effervescence.</p>
                 </div>
             </div>

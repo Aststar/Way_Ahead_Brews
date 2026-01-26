@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Star } from 'lucide-react';
 
@@ -7,6 +7,9 @@ interface HeroProps {
   onShopClick: () => void;
   onStoryClick?: () => void;
 }
+
+// Rotating text phrases - defined outside component for stability
+const ROTATING_PHRASES = ["Flavorfully", "Look ahead,", "Think ahead, drink"];
 
 const Hero: React.FC<HeroProps> = ({ onShopClick, onStoryClick }) => {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -19,6 +22,17 @@ const Hero: React.FC<HeroProps> = ({ onShopClick, onStoryClick }) => {
   const yText = useTransform(scrollYProgress, [0, 1], [0, 50]);
   // Parallax effect for background - moves slower
   const backgroundY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
+  // Rotating text state
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % ROTATING_PHRASES.length);
+    }, 4000); // Change phrase every 4 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section 
@@ -118,6 +132,7 @@ const Hero: React.FC<HeroProps> = ({ onShopClick, onStoryClick }) => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-[#f5dd12] text-sm font-medium tracking-wider uppercase"
+            style={{ marginTop: 'calc(-2rem - 3cm)', marginBottom: 'calc(1rem + 1cm)' }}
           >
             <Star className="w-4 h-4 fill-current" />
             The Molecular Carbonation Standard
@@ -125,15 +140,23 @@ const Hero: React.FC<HeroProps> = ({ onShopClick, onStoryClick }) => {
 
           {/* --- BIG HEADLINE --- */}
           <div className="flex flex-col items-center">
-            {/* Line 1 */}
-            <motion.span 
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
-              className="block text-white text-5xl md:text-8xl lg:text-9xl font-heading font-bold tracking-tight"
-            >
-              Flavorfully
-            </motion.span>
+            {/* Line 1 - Rotating Text */}
+            <div className="relative flex items-center justify-center" style={{ height: '1.2em', minHeight: '1.2em', width: '100%' }}>
+              {ROTATING_PHRASES.map((phrase, index) => (
+                <span
+                  key={index}
+                  className="block text-white text-4xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tight absolute whitespace-nowrap transition-all duration-500 ease-in-out"
+                  style={{ 
+                    left: '50%',
+                    transform: `translateX(-50%) translateY(${currentPhraseIndex === index ? 0 : 20}px)`,
+                    opacity: currentPhraseIndex === index ? 1 : 0,
+                    pointerEvents: currentPhraseIndex === index ? 'auto' : 'none'
+                  }}
+                >
+                  {phrase}
+                </span>
+              ))}
+            </div>
             {/* Line 2 - Wordmark */}
             <motion.div
               initial={{ y: 50, opacity: 0 }}

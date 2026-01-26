@@ -51,10 +51,11 @@ const FeaturedBrews: React.FC<FeaturedBrewsProps> = ({ onShopClick }) => {
     <motion.section
       id="featured"
       ref={sectionRef}
-      className="relative pb-8 md:pb-12 bg-white overflow-visible flex flex-col items-center"
+      className="relative bg-white overflow-visible flex flex-col items-center"
       style={{ 
         y: sectionY,
-        paddingTop: 'calc(6rem + 1cm)'
+        paddingTop: 'calc(6rem + 1cm)',
+        paddingBottom: 'calc(2rem + 2cm)'
       }}
     >
       <div className="container mx-auto px-6 flex flex-col items-center">
@@ -87,7 +88,7 @@ const FeaturedBrews: React.FC<FeaturedBrewsProps> = ({ onShopClick }) => {
           </motion.p>
         </div>
         {/* The Can Squad */}
-        <div className="relative w-full max-w-6xl h-[720px] md:h-[820px] [perspective:1000px] flex justify-center items-start gap-0 overflow-visible" style={{ marginTop: '-2cm' }}>
+        <div className="relative w-full max-w-6xl h-[720px] md:h-[820px] [perspective:1000px] flex justify-center items-start gap-0 overflow-visible" style={{ marginTop: '-2cm', paddingBottom: '2cm' }}>
           {CANS.map((can, index) => {
             // Center cans (index 1, 2) should be in front of outer ones
             const zIndexBase = (index === 1 || index === 2) ? 30 : 10;

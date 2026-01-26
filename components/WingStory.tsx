@@ -1,7 +1,6 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import WingLogo from './icons/WingLogo.tsx';
 
 interface WingStoryProps {
   onMoreClick: () => void;
@@ -57,10 +56,16 @@ const WingStory: React.FC<WingStoryProps> = ({ onMoreClick }) => {
               whileInView={{ scale: 1, opacity: 1, rotate: 0 }}
               viewport={{ once: true }}
               transition={{ type: 'spring', stiffness: 50, delay: 0.2 }}
-              className="relative text-white"
+              className="relative"
             >
               <div className="absolute inset-0 bg-[#ec1c24]/20 blur-[100px] rounded-full"></div>
-              <WingLogo className="w-80 h-80 drop-shadow-2xl text-[#ec1c24]" />
+              <img 
+                src="/images/logo/WayAhead-Logo-RGB-260115-v01ccr.png"
+                alt="Way Ahead Logo"
+                className="w-80 h-80 md:w-[480px] md:h-[480px] object-contain drop-shadow-2xl"
+                loading="lazy"
+                decoding="async"
+              />
             </motion.div>
           </div>
         </div>

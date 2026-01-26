@@ -41,7 +41,7 @@ export const products: Product[] = [
     title: 'Way Ahead Pilsner',
     description: 'Crisp, clean, and refreshing. A classic pilsner with a modern twist.',
     price: 12.99,
-    imageUrl: '/images/cans/Front Can Mockup-WayAhead-Can-03-01-Pil.png',
+    imageUrl: '/images/cans/Pilsner.png',
     logo: PilsnerLogo,
   },
   {
@@ -49,7 +49,7 @@ export const products: Product[] = [
     title: 'Way Ahead Hazy IPA',
     description: 'Juicy, hoppy, and full-bodied. All the haze without the booze.',
     price: 14.99,
-    imageUrl: '/images/cans/Front Can Mockup-WayAhead-Can-03-01-IPA.png',
+    imageUrl: '/images/cans/IPA.png',
     logo: IpaLogo,
   },
   {
@@ -57,7 +57,7 @@ export const products: Product[] = [
     title: 'Way Ahead Belgian White',
     description: 'Smooth and spicy with notes of coriander and orange peel.',
     price: 13.99,
-    imageUrl: '/images/cans/Front Can Mockup-WayAhead-Can-03-01-Wit.png',
+    imageUrl: '/images/cans/Belgian.png',
     logo: WhiteLogo,
   },
   {
@@ -65,7 +65,7 @@ export const products: Product[] = [
     title: 'Way Ahead Strawberry',
     description: 'A fruity and light beverage perfect for a sunny day.',
     price: 13.99,
-    imageUrl: '/images/cans/Front Can Mockup-WayAhead-Can-03-01-Straw.png',
+    imageUrl: '/images/cans/Strawberry.png',
     logo: StrawberryLogo,
   },
 ];

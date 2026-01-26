@@ -41,8 +41,18 @@ const Header: React.FC<{ currentPage: Page; onNavigate: (page: Page) => void }> 
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/5">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+      <header className="fixed top-0 left-0 w-full z-50 bg-[#005a31] backdrop-blur-xl border-b border-white/10 overflow-hidden">
+        {/* Condensation Overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-20"
+          style={{
+            backgroundImage: 'url(/images/textures/condensation.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            mixBlendMode: 'overlay'
+          }}
+        />
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center relative z-10">
           {/* Logo */}
           <button 
             onClick={() => handleNav('home')} 
@@ -108,7 +118,7 @@ const Header: React.FC<{ currentPage: Page; onNavigate: (page: Page) => void }> 
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[45] bg-slate-950 flex flex-col items-center justify-center gap-12 md:hidden"
+            className="fixed inset-0 z-[45] bg-[#005a31] flex flex-col items-center justify-center gap-12 md:hidden"
           >
             <nav className="flex flex-col gap-10 items-center text-center">
               <button 

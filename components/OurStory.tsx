@@ -28,7 +28,7 @@ const Floaties: React.FC<{ type: 'hearts' | 'stars' | 'stripe' | 'strawberries',
         className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
         style={{ opacity: useTransform(progress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]) }}
       >
-        <motion.div className="w-full h-32 bg-white/10 backdrop-blur-sm" />
+        <div className="w-full max-w-full h-32 bg-white/10 backdrop-blur-sm" style={{ width: '100%' }} />
       </motion.div>
     );
   }
@@ -102,7 +102,13 @@ const OurStory: React.FC<OurStoryProps> = ({ onShopClick }) => {
               <p className="text-center mt-4 text-slate-500 text-xs uppercase tracking-widest">Founder's Family Crest</p>
             </motion.div>
             <motion.div style={{ opacity: wingsOpacity }} className="absolute">
-              <WingLogo className="w-48 h-48 md:w-72 md:h-72 text-[#ec1c24]" />
+              <img 
+                src="/images/logo/WayAhead-Logo-RGB-260115-v01ccr.png"
+                alt="Way Ahead Logo"
+                className="w-48 h-48 md:w-72 md:h-72 object-contain"
+                loading="lazy"
+                decoding="async"
+              />
               <p className="text-center mt-4 text-[#ec1c24] text-xs uppercase tracking-widest">Way Ahead Wings</p>
             </motion.div>
           </div>
@@ -128,8 +134,8 @@ const OurStory: React.FC<OurStoryProps> = ({ onShopClick }) => {
           <Floaties type="stripe" progress={useTransform(stickyScroll, [0.5, 0.75], [0, 1])} />
           <Floaties type="strawberries" progress={useTransform(stickyScroll, [0.75, 1], [0, 1])} />
 
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="max-w-3xl mx-auto text-center relative h-[60vh]">
+          <div className="container mx-auto px-6 relative z-10" style={{ outline: 'none', border: 'none' }}>
+            <div className="max-w-3xl mx-auto text-center relative h-[60vh]" style={{ outline: 'none', border: 'none' }}>
               
               <motion.div 
                 className="absolute inset-0 flex flex-col items-center justify-center p-6" 
@@ -139,11 +145,13 @@ const OurStory: React.FC<OurStoryProps> = ({ onShopClick }) => {
                 }}
               >
                 <div className="relative mb-6">
-                  <WingLogo className="w-40 h-40 text-[#ec1c24]" />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-1 pt-4">
-                    <span className="text-red-600 text-xl">❤</span>
-                    <span className="text-red-600 text-xl">❤</span>
-                  </div>
+                  <img 
+                    src="/images/cans/Pilsner.png"
+                    alt="Way Ahead Pilsner"
+                    className="w-40 h-40 object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <h3 className="text-4xl md:text-6xl font-bold mb-4">Way Ahead Pilsner</h3>
                 <p className="text-lg md:text-xl mb-8 leading-relaxed">
@@ -161,10 +169,14 @@ const OurStory: React.FC<OurStoryProps> = ({ onShopClick }) => {
                   y: useTransform(stickyScroll, [0.25, 0.35, 0.45, 0.5], [50, 0, 0, -50]) 
                 }}
               >
-                <div className="relative mb-6 flex gap-2">
-                  <WingLogo className="w-40 h-40 text-blue-600 absolute -left-2 opacity-50" />
-                  <WingLogo className="w-40 h-40 text-[#ec1c24] relative" />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-2xl pt-4">★</div>
+                <div className="relative mb-6">
+                  <img 
+                    src="/images/cans/IPA.png"
+                    alt="Way Ahead Hazy IPA"
+                    className="w-40 h-40 object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <h3 className="text-4xl md:text-6xl font-bold mb-4">Way Ahead Hazy IPA</h3>
                 <p className="text-lg md:text-xl mb-8 leading-relaxed">
@@ -182,9 +194,14 @@ const OurStory: React.FC<OurStoryProps> = ({ onShopClick }) => {
                   y: useTransform(stickyScroll, [0.5, 0.6, 0.7, 0.75], [50, 0, 0, -50]) 
                 }}
               >
-                <div className="w-40 h-40 flex flex-col items-center justify-center mb-6 bg-red-600 rounded-lg p-2">
-                  <div className="w-full h-4 bg-white shadow-lg mb-2" />
-                  <WingLogo className="w-full h-full text-white/90" />
+                <div className="relative mb-6">
+                  <img 
+                    src="/images/cans/Belgian.png"
+                    alt="Way Ahead Belgian White"
+                    className="w-40 h-40 object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <h3 className="text-4xl md:text-6xl font-bold mb-4 text-white">Way Ahead Belgian White</h3>
                 <p className="text-lg md:text-xl mb-8 text-white/90 leading-relaxed">
@@ -202,9 +219,14 @@ const OurStory: React.FC<OurStoryProps> = ({ onShopClick }) => {
                   y: useTransform(stickyScroll, [0.75, 0.85, 1], [50, 0, 0]) 
                 }}
               >
-                <div className="flex items-center justify-center mb-6 gap-2">
-                   <div className="text-6xl">🍓</div>
-                   <WingLogo className="w-40 h-40 text-white" />
+                <div className="relative mb-6">
+                  <img 
+                    src="/images/cans/Strawberry.png"
+                    alt="Way Ahead Strawberry"
+                    className="w-40 h-40 object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
                 <h3 className="text-4xl md:text-6xl font-bold mb-4 text-slate-900">Way Ahead Strawberry</h3>
                 <p className="text-lg md:text-xl mb-8 text-slate-800 leading-relaxed">
